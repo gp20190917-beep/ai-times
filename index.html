@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja"><head><meta charset="UTF-8">
+<html lang="ja"><head>
+<!-- 更新のとき必須：<style id="wire-news"> と末尾のティッカースクリプトは削除・上書きしないこと（新聞スタイル維持） -->
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>まかせるAI WIRE｜AIニュース集約（非公認ファンメディア運営）</title>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Serif+JP:wght@500;700;900&family=Playfair+Display:wght@700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:"Zen Kaku Gothic New",sans-serif;background:#F4F5F7;color:#1A1D23}
@@ -38,48 +40,105 @@ body{font-family:"Zen Kaku Gothic New",sans-serif;background:#F4F5F7;color:#1A1D
 .ftr{text-align:center;font-size:12px;color:#8a8f9c;padding:26px 20px 40px;line-height:1.9}
 @media(max-width:760px){.top{grid-template-columns:1fr}}
 </style>
-<style id="wire-dark">
-/* ===== AI WIRE ダーク化 ===== */
-body{background:#0A0C10;color:#E9ECF2;background-image:
-  radial-gradient(900px 500px at 95% -10%,rgba(255,90,67,.13),transparent 60%),
-  radial-gradient(700px 420px at -10% 0%,rgba(124,122,255,.10),transparent 60%);
-  background-attachment:fixed;}
-.hdr{background:rgba(10,12,16,.85);border-bottom:1px solid rgba(255,255,255,.08)}
-.hdr .logo{font-family:"Space Grotesk","Zen Kaku Gothic New",sans-serif;letter-spacing:3px}
-.hdr .logo b{color:#FF5A43}
-.hdr .logo::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:#FF5A43;margin-right:12px;vertical-align:middle;animation:live 1.6s infinite}
-@keyframes live{0%{box-shadow:0 0 0 0 rgba(255,90,67,.7)}70%{box-shadow:0 0 0 10px rgba(255,90,67,0)}100%{box-shadow:0 0 0 0 rgba(255,90,67,0)}}
-.hdr .tag{color:#9AA3B5}
-.status{background:#12151C!important;border-bottom:1px solid rgba(255,255,255,.08);color:#9AA3B5}
-.status b{color:#fff;font-family:"JetBrains Mono",monospace;font-size:22px}
-.top{position:relative;overflow:hidden;background:linear-gradient(160deg,#171B25,#0F1218);border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 70px -30px rgba(255,90,67,.35)}
-.top::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,#FF5A43,#F5A623,transparent)}
-.tagred{background:#FF5A43;box-shadow:0 0 18px rgba(255,90,67,.6)}
-.top h2 a{color:#fff}.top h2 a:hover{color:#FF5A43}
-.top .ja2{color:#C7CEDD}
-.top .src{color:#8E8CFF}
-.sub{border-left-color:#FF5A43}
-.sub a{color:#E9ECF2!important}.sub a:hover{color:#FF5A43}
-.sub .s2{color:#9AA3B5!important}
-.cta{background:linear-gradient(135deg,#1B1844,#12151C);border:1px solid rgba(142,140,255,.3)}
-.cta a{box-shadow:0 8px 24px rgba(245,166,35,.3);transition:transform .2s}
-.cta a:hover{transform:translateY(-2px)}
-.pills{background:rgba(10,12,16,.9)!important;backdrop-filter:blur(12px)}
-.pill{background:#12151C!important;border-color:rgba(255,255,255,.08)!important;color:#9AA3B5;transition:.2s}
-.pill:hover{color:#fff;border-color:rgba(255,255,255,.3)}
-.pill.on{background:#FF5A43;border-color:#FF5A43;color:#fff;box-shadow:0 0 16px rgba(255,90,67,.45)}
-.day{display:flex;align-items:center;gap:14px;color:#9AA3B5;font-family:"JetBrains Mono","Zen Kaku Gothic New",monospace}
-.day::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.08)}
-.card{position:relative;overflow:hidden;background:#12151C!important;border:1px solid rgba(255,255,255,.08)!important;color:#E9ECF2;transition:border-color .2s,transform .2s,background .2s}
-.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:#FF5A43;transform:scaleY(0);transition:transform .25s}
-.card:hover{border-color:rgba(255,90,67,.45)!important;background:#161A23!important;transform:translateX(4px)}
-.card:hover::before{transform:scaleY(1)}
-.card .hl{color:#E9ECF2}
-.card .ja,.card .desc,.card > :last-child{color:#9AA3B5}
-.meta{color:#9AA3B5}
-.meta .time{color:#F5A623;font-family:"JetBrains Mono",monospace}
-footer{color:#9AA3B5;border-top:1px solid rgba(255,255,255,.08)}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+<style id="wire-news">
+/* ===== AI WIRE 新聞スタイル ===== */
+:root{--ink:#111;--sub:#555;--rule:#D9D5CC;--paper:#FBFAF7;--red:#C8102E;
+  --serif:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif}
+body{background:var(--paper);color:var(--ink)}
+.wrap{max-width:1080px}
+
+/* 題字（マストヘッド） */
+.hdr{background:var(--paper);color:var(--ink);flex-direction:column;justify-content:center;text-align:center;
+  padding:28px 20px 16px;gap:6px;border-bottom:6px double var(--ink);max-width:1080px;margin:0 auto}
+.hdr>div:first-child{display:flex;flex-direction:column;align-items:center}
+.hdr br{display:none}
+.hdr .tag{order:1;padding:0;border:none;font-size:12px;letter-spacing:.2em;color:var(--sub)}
+.hdr .logo{order:2;font-family:var(--serif);font-weight:900;font-size:clamp(36px,6.5vw,62px);letter-spacing:.04em;line-height:1.25;margin-top:6px}
+.hdr .logo b{font-family:"Playfair Display",serif;font-weight:900;color:var(--red);letter-spacing:.02em}
+.hdr>.tag{font-family:var(--serif);letter-spacing:.08em}
+
+/* 号数の帯 */
+.status{background:var(--paper);border-bottom:1px solid var(--ink);justify-content:center;gap:0;padding:10px 20px;
+  max-width:1080px;margin:0 auto;color:var(--sub)}
+.status span{padding:0 22px}
+.status span+span{border-left:1px solid var(--rule)}
+.status b{font-family:var(--serif);font-size:17px;color:var(--ink)}
+
+/* 流れるニュース帯 */
+.ticker{display:flex;background:var(--ink);color:#fff;font-size:14.5px;overflow:hidden}
+.ticker .lbl{flex:none;display:flex;align-items:center;gap:8px;background:var(--red);padding:9px 18px;font-weight:900;letter-spacing:.12em}
+.ticker .lbl::before{content:"";width:7px;height:7px;border-radius:50%;background:#fff;animation:tkdot 1.2s steps(1) infinite}
+@keyframes tkdot{50%{opacity:0}}
+.ticker .vp{flex:1;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.ticker .track{display:flex;width:max-content;animation:tick 90s linear infinite}
+.ticker:hover .track{animation-play-state:paused}
+.ticker a{color:#fff;text-decoration:none;padding:9px 30px;white-space:nowrap;border-right:1px solid #333}
+.ticker a:hover{text-decoration:underline}
+.ticker a b{font-family:"JetBrains Mono",monospace;color:#F5A623;margin-right:10px;font-weight:700}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* 1面トップ */
+.top{background:none;border:none;border-radius:0;border-bottom:1px solid var(--ink);padding:8px 0 30px;grid-template-columns:1.65fr 1fr;gap:0}
+.top>div:first-child{padding-right:30px;border-right:1px solid var(--rule)}
+.tagred{border-radius:0;background:var(--red);letter-spacing:.18em;padding:4px 12px}
+.top h2{font-family:var(--serif);font-weight:900;font-size:clamp(26px,3.4vw,38px);line-height:1.38}
+.top h2 a{color:var(--ink)}
+.top h2 a:hover{color:var(--red);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+.top .ja2{font-family:var(--serif);font-size:19px;font-weight:500;color:#333;line-height:1.8;margin-top:14px}
+.top .src{color:var(--red);font-size:13px}
+.subs{padding-left:30px;gap:0;align-content:start}
+.subs::before{content:"ほかの注目記事";display:block;border-top:3px solid var(--ink);padding-top:8px;margin-bottom:6px;font-size:13px;font-weight:900;letter-spacing:.15em}
+.sub{border-left:none;padding:14px 0;border-bottom:1px solid var(--rule)}
+.sub:last-child{border-bottom:none}
+.sub a{font-family:var(--serif);font-size:16.5px;color:var(--ink)}
+.sub a:hover{color:var(--red);text-decoration:underline}
+.sub .s2{color:var(--sub)}
+
+/* 運営者からのお知らせ */
+.cta{background:#fff;border:1px solid var(--ink);border-radius:0;box-shadow:5px 5px 0 var(--ink)}
+.cta .l{color:var(--ink)}
+.cta .l small{color:var(--red);font-weight:900}
+.cta a{background:var(--ink);color:#fff;border-radius:0}
+.cta a:hover{background:var(--red)}
+
+/* ジャンルのタブ */
+.pills{background:rgba(251,250,247,.96);backdrop-filter:blur(6px);border-top:3px solid var(--ink);border-bottom:1px solid var(--ink);
+  padding:0;gap:0;margin:30px 0 6px;flex-wrap:nowrap;overflow-x:auto}
+.pill{border:none;border-radius:0;background:none;padding:12px 16px;font-size:14.5px;color:var(--sub);white-space:nowrap;position:relative}
+.pill:hover{color:var(--ink)}
+.pill.on{background:none;color:var(--red);border-color:transparent}
+.pill.on::after{content:"";position:absolute;left:12px;right:12px;bottom:0;height:3px;background:var(--red)}
+
+/* 日付の見出し */
+.day{font-family:var(--serif);font-size:20px;color:var(--ink);margin:38px 0 0;padding-bottom:8px;border-bottom:2px solid var(--ink)}
+
+/* 記事一覧：箱をやめて罫線で区切る */
+.card{background:none;border:none;border-bottom:1px solid var(--rule);border-radius:0;padding:18px 12px;margin:0 -12px;
+  display:flex;flex-direction:column;transition:background .15s}
+.card:hover{background:#fff}
+.meta{gap:14px;margin-bottom:6px}
+.meta .time{font-family:"JetBrains Mono",monospace;color:var(--red)}
+.meta .src{color:var(--ink);font-weight:900}
+.meta .tag{border:none;padding:0;font-weight:900;display:inline-flex;align-items:center;gap:6px}
+.meta .tag::before{content:"";width:8px;height:8px;background:currentColor}
+.hl{font-family:var(--serif);font-size:19px;font-weight:700;line-height:1.6;color:var(--ink)}
+/* 日本語訳がある記事は、日本語を大見出しに */
+.card .ja{order:1;margin-top:0;font-family:var(--serif);font-size:19px;font-weight:700;line-height:1.6;color:var(--ink)}
+.card:has(.ja) .hl{order:2;margin-top:6px;font-family:Georgia,serif;font-size:14px;font-weight:400;font-style:italic;color:#777}
+.card .desc{order:3;font-size:14px;color:var(--sub);margin-top:6px}
+.card:hover .ja,.card:not(:has(.ja)):hover .hl{color:var(--red);text-decoration:underline;text-underline-offset:4px}
+
+.ftr{color:var(--sub);border-top:6px double var(--ink);max-width:1040px;margin:30px auto 0}
+
+@media(max-width:760px){
+  .top>div:first-child{padding-right:0;border-right:none}
+  .subs{padding-left:0;margin-top:22px}
+  .status span{padding:0 12px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .ticker .vp{overflow-x:auto}
+}
 </style>
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=1">
@@ -114,5 +173,31 @@ document.querySelectorAll('.pill').forEach(function(q){q.classList.remove('on')}
 var f=p.dataset.f;document.querySelectorAll('.card').forEach(function(c){
 c.style.display=(f==='all'||c.dataset.g===f)?'':'none';});
 });});
+</script>
+
+<script>
+(function(){
+  var cards=[].slice.call(document.querySelectorAll('a.card')).slice(0,10);
+  var anchor=document.querySelector('.status')||document.querySelector('.hdr');
+  if(!cards.length||!anchor) return;
+  var bar=document.createElement('div'); bar.className='ticker';
+  var lbl=document.createElement('span'); lbl.className='lbl'; lbl.textContent='最新ニュース';
+  var vp=document.createElement('div'); vp.className='vp';
+  var track=document.createElement('div'); track.className='track';
+  for(var k=0;k<2;k++){
+    cards.forEach(function(c){
+      var ja=c.querySelector('.ja'), hl=c.querySelector('.hl'), tm=c.querySelector('.time');
+      var text=(ja?ja.textContent.replace(/^（参考訳）/,''):(hl?hl.textContent:'')).trim();
+      if(!text) return;
+      var a=document.createElement('a'); a.href=c.href; a.target='_blank'; a.rel='noopener';
+      if(k===1){a.setAttribute('aria-hidden','true'); a.tabIndex=-1;}
+      var b=document.createElement('b'); b.textContent=tm?tm.textContent:'';
+      a.appendChild(b); a.appendChild(document.createTextNode(text));
+      track.appendChild(a);
+    });
+  }
+  vp.appendChild(track); bar.appendChild(lbl); bar.appendChild(vp);
+  anchor.parentNode.insertBefore(bar, anchor.nextSibling);
+})();
 </script>
 </body></html>
