@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>まかせるAI WIRE｜AIニュース集約（非公認ファンメディア運営）</title>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:"Zen Kaku Gothic New",sans-serif;background:#F4F5F7;color:#1A1D23}
@@ -37,6 +37,119 @@ body{font-family:"Zen Kaku Gothic New",sans-serif;background:#F4F5F7;color:#1A1D
 .desc{font-size:12.5px;color:#8a8f9c;margin-top:6px;line-height:1.6}
 .ftr{text-align:center;font-size:12px;color:#8a8f9c;padding:26px 20px 40px;line-height:1.9}
 @media(max-width:760px){.top{grid-template-columns:1fr}}
+<style id="wire-dark">
+/* ===== AI WIRE ダーク化 ===== */
+:root{
+  --bg:#0A0C10; --panel:#12151C; --line:rgba(255,255,255,.08);
+  --text:#E9ECF2; --sub:#9AA3B5; --red:#FF5A43; --amber:#F5A623; --indigo:#8E8CFF;
+}
+body{
+  background:#0A0C10; color:#E9ECF2;
+  background-image:
+    radial-gradient(900px 500px at 95% -10%,rgba(255,90,67,.13),transparent 60%),
+    radial-gradient(700px 420px at -10% 0%,rgba(124,122,255,.10),transparent 60%);
+  background-attachment:fixed;
+}
+
+/* ヘッダー：ロゴの前に点滅するLIVEランプ */
+.hdr{background:rgba(10,12,16,.85);border-bottom:1px solid rgba(255,255,255,.08)}
+.hdr .logo{font-family:"Space Grotesk","Zen Kaku Gothic New",sans-serif;letter-spacing:3px}
+.hdr .logo b{color:#FF5A43}
+.hdr .logo::before{
+  content:"";display:inline-block;width:10px;height:10px;border-radius:50%;
+  background:#FF5A43;margin-right:12px;vertical-align:middle;
+  animation:live 1.6s infinite;
+}
+@keyframes live{
+  0%{box-shadow:0 0 0 0 rgba(255,90,67,.7)}
+  70%{box-shadow:0 0 0 10px rgba(255,90,67,0)}
+  100%{box-shadow:0 0 0 0 rgba(255,90,67,0)}
+}
+.hdr .tag{color:#9AA3B5}
+
+/* 件数バー：計器っぽい数字 */
+.status{background:#12151C;border-bottom:1px solid rgba(255,255,255,.08);color:#9AA3B5}
+.status b{color:#fff;font-family:"JetBrains Mono",monospace;font-size:22px}
+
+/* トップニュース：上に赤い光の線 */
+.top{
+  position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#171B25,#0F1218);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 30px 70px -30px rgba(255,90,67,.35);
+}
+.top::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:2px;
+  background:linear-gradient(90deg,transparent,#FF5A43,#F5A623,transparent);
+}
+.tagred{background:#FF5A43;box-shadow:0 0 18px rgba(255,90,67,.6)}
+.top h2 a{color:#fff}
+.top h2 a:hover{color:#FF5A43}
+.top .ja2{color:#9AA3B5}
+.top .src{color:#8E8CFF}
+.sub{border-left-color:#FF5A43}
+.sub a{color:#E9ECF2}
+.sub a:hover{color:#FF5A43}
+.sub .s2{color:#9AA3B5}
+
+/* 別サイトへの案内 */
+.cta{
+  background:linear-gradient(135deg,#1B1844,#12151C);
+  border:1px solid rgba(142,140,255,.3);
+}
+.cta a{box-shadow:0 8px 24px rgba(245,166,35,.3);transition:transform .2s}
+.cta a:hover{transform:translateY(-2px)}
+
+/* カテゴリのボタン */
+.pills{background:rgba(10,12,16,.85);backdrop-filter:blur(12px)}
+.pill{background:#12151C;border-color:rgba(255,255,255,.08);color:#9AA3B5;transition:.2s}
+.pill:hover{color:#fff;border-color:rgba(255,255,255,.3)}
+.pill.on{background:#FF5A43;border-color:#FF5A43;color:#fff;box-shadow:0 0 16px rgba(255,90,67,.45)}
+
+/* 日付：横に線を引いて区切る */
+.day{display:flex;align-items:center;gap:14px;color:#9AA3B5;font-family:"JetBrains Mono","Zen Kaku Gothic New",monospace}
+.day::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.08)}
+
+/* ニュースカード：マウスを乗せると左に赤いバー */
+.card{
+  position:relative;overflow:hidden;
+  background:#12151C;border:1px solid rgba(255,255,255,.08);color:#E9ECF2;
+  transition:border-color .2s,transform .2s,background .2s;
+}
+.card *{color:inherit}
+.card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:#FF5A43;transform:scaleY(0);transition:transform .25s;
+}
+.card:hover{border-color:rgba(255,90,67,.45);background:#161A23;transform:translateX(4px)}
+.card:hover::before{transform:scaleY(1)}
+.card > :last-child{color:#9AA3B5}
+.meta{color:#9AA3B5}
+.meta .time{color:#F5A623;font-family:"JetBrains Mono",monospace}
+
+footer{color:#9AA3B5;border-top:1px solid rgba(255,255,255,.08)}
+
+/* （このサイトのカード構造に合わせた補助：見出しは明・参考訳と概要は薄色） */
+.card .hl{color:#E9ECF2}
+.card .ja,.card .desc{color:#9AA3B5}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+
+/* ===== 補助レイヤー：元CSSの明るい背景を確実に上書き ===== */
+html{background:#0A0C10}
+body{background:#0A0C10!important;background-image:
+  radial-gradient(900px 500px at 95% -10%,rgba(255,90,67,.13),transparent 60%),
+  radial-gradient(700px 420px at -10% 0%,rgba(124,122,255,.10),transparent 60%);}
+.card{background:#12151C!important;border:1px solid rgba(255,255,255,.08)!important}
+.status{background:#12151C!important}
+.pills{background:rgba(10,12,16,.9)!important}
+.pill{background:#12151C!important;border-color:rgba(255,255,255,.08)!important}
+.top .ja2{color:#C7CEDD}
+.sub a{color:#E9ECF2!important}
+.sub .s2{color:#9AA3B5!important}
 </style></head><body>
 <div class="hdr"><div><span class="logo">まかせるAI <b>WIRE</b></span><br><span class="tag">RSS集約・出典明示・非公認ファンメディア運営</span></div><div class="tag">最終更新：2026年10月11日 11:29 JST</div></div>
 <div class="status"><span><b>67</b>収集記事</span><span><b>5</b>ソース</span><span><b>2026年10月11日</b>最新更新</span></div>
