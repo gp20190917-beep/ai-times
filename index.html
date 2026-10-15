@@ -171,7 +171,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans)}
 document.querySelectorAll('.pill').forEach(function(p){p.addEventListener('click',function(){
 document.querySelectorAll('.pill').forEach(function(q){q.classList.remove('on')});p.classList.add('on');
 var f=p.dataset.f;document.querySelectorAll('.card').forEach(function(c){
-c.style.display=(f==='all'||c.dataset.g===f)?'':'none';});
+c.style.display=(f==='all'||c.dataset.g===f||dataset.g==='g-'+f)?'':'none';});
 });});
 </script>
 
