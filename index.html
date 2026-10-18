@@ -98,6 +98,9 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans)}
 .pill.on::after{content:"";position:absolute;left:12px;right:12px;bottom:0;height:3px;background:var(--red)}
 .wx-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:32px;align-items:start}
 .wx-side{position:sticky;top:70px;display:grid;gap:20px;margin-top:30px}
+.wx-prlink{display:block;margin-top:2px;padding:16px 18px;background:#FFF6E3;border:1px solid #F5A623;border-radius:6px;color:#1A1D23;text-decoration:none;font-size:13px;line-height:1.7;font-weight:700}
+.wx-prlink b{display:block;font-size:14.5px;margin-bottom:6px;color:#1A1D23}
+.wx-prlab{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.08em;color:#8a5d00;background:#F5A623;border-radius:4px;padding:2px 8px;margin-bottom:8px}
 .wx-box{background:#fff;border-radius:4px;border-top:4px solid var(--ink);padding:16px 20px}
 .wx-box h3{font-size:15px;font-weight:900;margin-bottom:4px}
 .wx-box ul{list-style:none}
@@ -212,6 +215,10 @@ c.style.display=(f==='all'||c.dataset.g===f||c.dataset.g==='g-'+f)?'':'none';});
     if(c.classList.contains('day')){feed.appendChild(c);grid=el('div','wx-grid');feed.appendChild(grid)}
     else (grid||feed).appendChild(c);
   });
+  var pr=el('div','wx-box');var lab=el('span','wx-prlab','PR');pr.appendChild(lab);
+  var pa=el('a','wx-prlink');pa.href='https://www.genspark.ai/?via=ecf7wgn';pa.target='_blank';pa.rel='sponsored noopener';
+  pa.innerHTML='<b>毎日のニュースを見てきたら、\n試したくなる。</b>Gensparkを無料ではじめる →';
+  pr.appendChild(pa);side.appendChild(pr);
   layout.appendChild(feed);layout.appendChild(side);
   var pills=$('.pills');
   if(pills&&pills.parentNode===wrap)pills.after(layout);else wrap.appendChild(layout);
